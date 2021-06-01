@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Codebreaker :MonoBehaviour {
+public class Codebreaker : MonoBehaviour {
 
     /*
         NOTES:
