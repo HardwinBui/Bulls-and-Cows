@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        // If the game hasn't started, check player input to begin
         if(!inGame && Input.anyKeyDown) {
             inGame = true;
             ui.BeginGame(0);
@@ -32,19 +33,26 @@ public class GameManager : MonoBehaviour {
 
     // Progress the game based on values of bulls and cows
     public void EnterValues() {
+        // The game ends when the AI guesses right
         if(bulls >= digitAmount) {
             ui.LoseGame(turn);
         }
+        // The game progresses if the AI can still guess
         else if(ai.CanGuess()) {
+            ai.InputPlayerResponse(bulls, cows);
+            ui.NextGuess(turn, ai.GetGuess());
+
             turn += 1;
             ResetInputValues();
-            ui.NextGuess(turn, ai.GetGuess());
         }
+        // If the AI can't guess anymore, the game also ends
+        // NOTE: this should only occur if the player failed to input bull and cow values correctly
         else {
             ui.WinGame();
         }
     }
 
+    // Restarts the game once the player is ready
     public void PlayAgain() {
         turn = 1;
         inGame = false;
@@ -53,11 +61,13 @@ public class GameManager : MonoBehaviour {
         ui.ResetGame();
     }
 
+    // Allows player to increment/decrement value of bulls
     public void AdjustBullAmount(int value) {
         bulls = (bulls + value + inputOptions) % inputOptions;
         ui.UpdateBullDisplay(bulls);
     }
 
+    // Allows player to increment/decrement value of cows
     public void AdjustCowAmount(int value) {
         cows = (cows + value + inputOptions) % inputOptions;
         ui.UpdateCowDisplay(cows);
@@ -65,6 +75,7 @@ public class GameManager : MonoBehaviour {
 
 #endregion
 
+    // Reset cows and bulls to their default value
     private void ResetInputValues() {
         cows = 0;
         bulls = 0;
