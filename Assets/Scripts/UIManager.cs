@@ -45,7 +45,7 @@ public class UIManager : MonoBehaviour {
         makerScreen.SetActive(false);
         endScreen.SetActive(true);
 
-        endMessage.text = "I can't guess your answer with the provided input";
+        endMessage.text = "I couldn't guess your answer with the provided input";
     }
 
     // Returns player back to title screen

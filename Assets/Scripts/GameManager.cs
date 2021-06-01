@@ -30,32 +30,26 @@ public class GameManager : MonoBehaviour {
 
 #region Public Button Functions
 
-    // Reset the game if the guess was right
-    public void CorrectGuess() {
-        ui.LoseGame(turn);
-    }
-
-    public void IncorrectGuess() {
-        //ui.WrongGuess();
-
-        // TODO: check if can guess again, if not then GG
-
-        ui.NextGuess(0,0);
-    }
-
     // Progress the game based on values of bulls and cows
     public void EnterValues() {
         if(bulls >= digitAmount) {
             ui.LoseGame(turn);
         }
+        else if(ai.CanGuess()) {
+            turn += 1;
+            ResetInputValues();
+            ui.NextGuess(turn, ai.GetGuess());
+        }
         else {
-            print("poopy");
+            ui.WinGame();
         }
     }
 
     public void PlayAgain() {
+        turn = 1;
         inGame = false;
         ResetInputValues();
+
         ui.ResetGame();
     }
 

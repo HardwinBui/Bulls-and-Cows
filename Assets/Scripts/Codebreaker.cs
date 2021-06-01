@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Codebreaker : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+public class Codebreaker :MonoBehaviour {
+
+
+    public bool CanGuess() {
+        return true;
+        return false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public int GetGuess() {
+        return 2;
     }
+    
 }
