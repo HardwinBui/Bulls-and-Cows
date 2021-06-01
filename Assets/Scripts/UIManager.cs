@@ -5,8 +5,7 @@ using TMPro;
 
 public class UIManager : MonoBehaviour {
 
-    [SerializeField] GameObject startScreen, breakerScreen, makerScreen, endScreen;
-    [SerializeField] GameObject restartButton;
+    [SerializeField] GameObject startScreen, makerScreen, endScreen;
     [SerializeField] TextMeshProUGUI turnDisplay, guessDisplay;
     [SerializeField] TextMeshProUGUI cows, bulls, endMessage;
 
@@ -15,31 +14,22 @@ public class UIManager : MonoBehaviour {
     // Begins the game given the AI's first guess
     public void BeginGame(int initialGuess) {
         startScreen.SetActive(false);
-        restartButton.SetActive(true);
-        breakerScreen.SetActive(true);
+        makerScreen.SetActive(true);
         ToggleGuessDisplays(true);
         UpdateGuessDisplays(1, initialGuess);
+        ResetBullCowValues();
     }
 
-    // Prompts player with the AI's next guess
+    // Prompts player with the AI's next guess and reset input UI
     public void NextGuess(int turnCount, int guess) {
         UpdateGuessDisplays(turnCount, guess);
-        makerScreen.SetActive(false);
-        breakerScreen.SetActive(true);
-    }
-
-    // Changes screen to allow players to input bulls and cows
-    public void WrongGuess() {
-        breakerScreen.SetActive(false);
-        makerScreen.SetActive(true);
-        UpdateCowDisplay(0);
-        UpdateBullDisplay(0);
+        ResetBullCowValues();
     }
 
     // Display end screen with number of turns the game lasted
     public void LoseGame(int turns) {
         ToggleGuessDisplays(false);
-        breakerScreen.SetActive(false);
+        makerScreen.SetActive(false);
         endScreen.SetActive(true);
 
         endMessage.text = "Your number was guessed in " + turns.ToString() + " turn";
@@ -61,8 +51,6 @@ public class UIManager : MonoBehaviour {
     // Returns player back to title screen
     public void ResetGame() {
         startScreen.SetActive(true);
-        restartButton.SetActive(false);
-        breakerScreen.SetActive(false);
         makerScreen.SetActive(false);
         endScreen.SetActive(false);
         ToggleGuessDisplays(false);
@@ -90,5 +78,11 @@ public class UIManager : MonoBehaviour {
     private void ToggleGuessDisplays(bool enable) {
         turnDisplay.gameObject.SetActive(enable);
         guessDisplay.gameObject.SetActive(enable);
+    }
+
+    // Sets both bull and cow displays to 0
+    private void ResetBullCowValues() {
+        UpdateCowDisplay(0);
+        UpdateBullDisplay(0);
     }
 }

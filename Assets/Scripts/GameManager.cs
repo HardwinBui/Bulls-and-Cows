@@ -7,11 +7,12 @@ public class GameManager : MonoBehaviour {
     [SerializeField] UIManager ui;
     [SerializeField] Codebreaker ai;
 
-    const int maxBullCowValue = 5;
+    const int digitAmount = 4;
+    const int inputOptions = digitAmount + 1;
 
     // Game variables
     int turn = 1;
-    bool inGame, isOver;
+    bool inGame;
     int bulls, cows;
 
     // Start is called before the first frame update
@@ -31,39 +32,48 @@ public class GameManager : MonoBehaviour {
 
     // Reset the game if the guess was right
     public void CorrectGuess() {
-        isOver = true;
         ui.LoseGame(turn);
     }
 
     public void IncorrectGuess() {
-        cows = 0;
-        bulls = 0;
-        ui.WrongGuess();
+        //ui.WrongGuess();
+
+        // TODO: check if can guess again, if not then GG
+
+        ui.NextGuess(0,0);
     }
 
-    // Allows player to end game and restart at any given time
-    public void RestartGame() {
-        turn = 1;
-        inGame = false;
-        ui.ResetGame();
+    // Progress the game based on values of bulls and cows
+    public void EnterValues() {
+        if(bulls >= digitAmount) {
+            ui.LoseGame(turn);
+        }
+        else {
+            print("poopy");
+        }
     }
 
     public void PlayAgain() {
         inGame = false;
-        isOver = false;
+        ResetInputValues();
         ui.ResetGame();
     }
 
     public void AdjustBullAmount(int value) {
-        bulls = (bulls + value + maxBullCowValue) % maxBullCowValue;
+        bulls = (bulls + value + inputOptions) % inputOptions;
         ui.UpdateBullDisplay(bulls);
     }
 
     public void AdjustCowAmount(int value) {
-        cows = (cows + value + maxBullCowValue) % maxBullCowValue;
+        cows = (cows + value + inputOptions) % inputOptions;
         ui.UpdateCowDisplay(cows);
     }
 
 #endregion
+
+    private void ResetInputValues() {
+        cows = 0;
+        bulls = 0;
+    }
 
 }
