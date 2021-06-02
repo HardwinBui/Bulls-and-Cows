@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] UIManager ui;
     [SerializeField] Codebreaker ai;
 
-    const int digitAmount = 4;
+    public const int digitAmount = 4;
     const int inputOptions = digitAmount + 1;
 
     // Game variables
