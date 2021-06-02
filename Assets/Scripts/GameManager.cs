@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         ui.ResetGame();
+        ResetInputValues();
     }
 
     // Update is called once per frame
@@ -40,7 +41,7 @@ public class GameManager : MonoBehaviour {
         // The game progresses if the AI can still guess
         else if(ai.CanGuess()) {
             ai.InputPlayerResponse(bulls, cows);
-            ui.NextGuess(turn, ai.GetGuess());
+            ui.UpdateGuessDisplays(turn, ai.GetGuess());
 
             turn += 1;
             ResetInputValues();
@@ -79,6 +80,8 @@ public class GameManager : MonoBehaviour {
     private void ResetInputValues() {
         cows = 0;
         bulls = 0;
+        ui.UpdateCowDisplay(cows);
+        ui.UpdateBullDisplay(bulls);
     }
 
 }

@@ -17,13 +17,12 @@ public class UIManager : MonoBehaviour {
         makerScreen.SetActive(true);
         ToggleGuessDisplays(true);
         UpdateGuessDisplays(1, initialGuess);
-        ResetBullCowValues();
     }
 
-    // Prompts player with the AI's next guess and reset input UI
-    public void NextGuess(int turnCount, int guess) {
-        UpdateGuessDisplays(turnCount, guess);
-        ResetBullCowValues();
+    // Update values of turn and guess displays
+    public void UpdateGuessDisplays(int turn, int guess) {
+        turnDisplay.text = "Turn: " + turn.ToString();
+        guessDisplay.text = "Guess: " + guess.ToString();
     }
 
     // Display end screen with number of turns the game lasted
@@ -68,21 +67,9 @@ public class UIManager : MonoBehaviour {
 
 #endregion
 
-    // Update values of turn and guess displays
-    private void UpdateGuessDisplays(int turn, int guess) {
-        turnDisplay.text = "Turn: " + turn.ToString();
-        guessDisplay.text = "Guess: " + guess.ToString();
-    }
-
     // Hide/show turn and guess displays
     private void ToggleGuessDisplays(bool enable) {
         turnDisplay.gameObject.SetActive(enable);
         guessDisplay.gameObject.SetActive(enable);
-    }
-
-    // Sets both bull and cow displays to 0
-    private void ResetBullCowValues() {
-        UpdateCowDisplay(0);
-        UpdateBullDisplay(0);
     }
 }
