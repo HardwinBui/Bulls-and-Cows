@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+        if(!ui) ui = FindObjectOfType<UIManager>();
+        if(!ai) ai = FindObjectOfType<Codebreaker>();
+
         PlayAgain();
     }
 
@@ -42,7 +45,7 @@ public class GameManager : MonoBehaviour {
             var before = Time.realtimeSinceStartup;
             ai.InputPlayerResponse(bulls, cows);
             var after = Time.realtimeSinceStartup;
-           // print(after - before);
+            print(after - before);
             if(ai.CanGuess()) {
                 turn += 1;
                 ui.UpdateGuessDisplays(turn, ai.GetGuess());
