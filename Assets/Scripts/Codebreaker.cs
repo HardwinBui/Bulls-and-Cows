@@ -92,7 +92,7 @@ public class Codebreaker : MonoBehaviour {
 
     // Returns true if the AI can still continue guessing
     public bool CanGuess() {
-        //print(possibleCodes.Count);
+        print(possibleCodes.Count);
         return possibleCodes.Count > 0;
     }
 
