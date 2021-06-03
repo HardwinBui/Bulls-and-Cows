@@ -17,8 +17,7 @@ public class GameManager : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        ui.ResetGame();
-        ResetInputValues();
+        PlayAgain();
     }
 
     // Update is called once per frame
@@ -26,7 +25,7 @@ public class GameManager : MonoBehaviour {
         // If the game hasn't started, check player input to begin
         if(!inGame && Input.anyKeyDown) {
             inGame = true;
-            ui.BeginGame(0);
+            ui.BeginGame(ai.GetGuess());
         }
     }
 
@@ -39,17 +38,19 @@ public class GameManager : MonoBehaviour {
             ui.LoseGame(turn);
         }
         // The game progresses if the AI can still guess
-        else if(ai.CanGuess()) {
-            ai.InputPlayerResponse(bulls, cows);
-            ui.UpdateGuessDisplays(turn, ai.GetGuess());
-
-            turn += 1;
-            ResetInputValues();
-        }
-        // If the AI can't guess anymore, the game also ends
-        // NOTE: this should only occur if the player failed to input bull and cow values correctly
         else {
-            ui.WinGame();
+            ai.InputPlayerResponse(bulls, cows);
+            if(ai.CanGuess()) {
+                turn += 1;
+                ui.UpdateGuessDisplays(turn, ai.GetGuess());
+
+                ResetInputValues();
+            }
+            // If the AI can't guess anymore, the game ends
+            // NOTE: this should only occur if the player failed to input bull and cow values correctly
+            else {
+                ui.WinGame();
+            }
         }
     }
 
@@ -58,7 +59,8 @@ public class GameManager : MonoBehaviour {
         turn = 1;
         inGame = false;
         ResetInputValues();
-
+        
+        ai.ResetAI();
         ui.ResetGame();
     }
 

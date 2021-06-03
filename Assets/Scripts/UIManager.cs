@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour {
     // Update values of turn and guess displays
     public void UpdateGuessDisplays(int turn, int guess) {
         turnDisplay.text = "Turn: " + turn.ToString();
-        guessDisplay.text = "Guess: " + guess.ToString();
+        guessDisplay.text = "Guess: " + guess.ToString("D4");
     }
 
     // Display end screen with number of turns the game lasted
