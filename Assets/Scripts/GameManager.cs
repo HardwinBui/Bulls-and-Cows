@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour {
             inGame = true;
             ui.BeginGame(ai.GetGuess());
         }
+        if(inGame && Input.GetMouseButtonDown(0)) {
+            //print(Time.time);
+        }
     }
 
 #region Public Button Functions
@@ -39,7 +42,10 @@ public class GameManager : MonoBehaviour {
         }
         // The game progresses if the AI can still guess
         else {
+            var before = Time.realtimeSinceStartup;
             ai.InputPlayerResponse(bulls, cows);
+            var after = Time.realtimeSinceStartup;
+            print(after - before);
             if(ai.CanGuess()) {
                 turn += 1;
                 ui.UpdateGuessDisplays(turn, ai.GetGuess());
