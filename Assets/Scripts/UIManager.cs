@@ -5,18 +5,18 @@ using TMPro;
 
 public class UIManager : MonoBehaviour {
 
-    [SerializeField] GameObject startScreen, makerScreen, endScreen;
+    [SerializeField] GameObject startScreen, gameScreen, endScreen;
     [SerializeField] TextMeshProUGUI turnDisplay, guessDisplay;
     [SerializeField] TextMeshProUGUI cows, bulls, endMessage;
 
 #region Functions to adjust the game scene display
 
     // Begins the game given the AI's first guess
-    public void BeginGame(int initialGuess) {
+    public void BeginGame(int turn, int guess) {
         startScreen.SetActive(false);
-        makerScreen.SetActive(true);
+        gameScreen.SetActive(true);
         ToggleGuessDisplays(true);
-        UpdateGuessDisplays(1, initialGuess);
+        UpdateGuessDisplays(turn, guess);
     }
 
     // Update values of turn and guess displays
@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour {
     // Display end screen with number of turns the game lasted
     public void LoseGame(int turns) {
         ToggleGuessDisplays(false);
-        makerScreen.SetActive(false);
+        gameScreen.SetActive(false);
         endScreen.SetActive(true);
 
         endMessage.text = "Your number was guessed in " + turns.ToString() + " turn";
@@ -41,7 +41,7 @@ public class UIManager : MonoBehaviour {
     // Display losing screen for AI if it's unable to guess the value based on player input
     public void WinGame() {
         ToggleGuessDisplays(false);
-        makerScreen.SetActive(false);
+        gameScreen.SetActive(false);
         endScreen.SetActive(true);
 
         endMessage.text = "I couldn't guess your answer based on the provided input";
@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour {
     // Returns player back to title screen
     public void ResetGame() {
         startScreen.SetActive(true);
-        makerScreen.SetActive(false);
+        gameScreen.SetActive(false);
         endScreen.SetActive(false);
         ToggleGuessDisplays(false);
     }

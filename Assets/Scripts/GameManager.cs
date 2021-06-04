@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour {
         // If the game hasn't started, check player input to begin
         if(!inGame && Input.anyKeyDown) {
             inGame = true;
-            ui.BeginGame(ai.GetGuess());
+            ui.BeginGame(turn, ai.GetGuess());
         }
     }
 
