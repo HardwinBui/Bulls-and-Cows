@@ -15,6 +15,7 @@ public class Codebreaker : MonoBehaviour {
     // A struct used to represent any 4 digit number, making it easier to compare each digit
     struct Code {
         int[] code;
+        HashSet<int> digits;
 
         // Hard-coded constructor to only support 4 digit codes
         public Code(int digit1, int digit2, int digit3, int digit4) {
@@ -23,6 +24,11 @@ public class Codebreaker : MonoBehaviour {
             code[1] = digit2;
             code[2] = digit3;
             code[3] = digit4;
+
+            digits = new HashSet<int>();
+            for(int i = 0; i < code.Length; i++) {
+                digits.Add(code[i]);
+            }
         }
 
         // Returns the code's digit at a given position
@@ -54,13 +60,8 @@ public class Codebreaker : MonoBehaviour {
         // Returns true if the code contains a given digit that's not at the specified position
         public bool ContainsCowDigit(int digit, int position) {
             if(position >= code.Length || position < 0) return false;
-
-            for(int i = 0; i < code.Length; i++) {
-                if(i != position && code[i] == digit) {
-                    return true;
-                }
-            }
-            return false;
+            if(ContainsBullDigit(digit, position)) return false;
+            return digits.Contains(digit);
         }
     }
 
@@ -78,7 +79,6 @@ public class Codebreaker : MonoBehaviour {
 
     // Returns true if the AI can still continue guessing
     public bool CanGuess() {
-        //print(possibleCodes.Count);
         return possibleCodes.Count > 0;
     }
 
@@ -92,7 +92,6 @@ public class Codebreaker : MonoBehaviour {
     public void InputPlayerResponse(int bulls, int cows) {
         // Remove the current asnwer
         possibleCodes.Remove(currentGuess);
-
         // Remove all codes that don't have correct amount of bulls and cows
         for(int i = 0; i < possibleCodes.Count; i++) {
             if(!CheckCode(possibleCodes[i], bulls, cows)) {
