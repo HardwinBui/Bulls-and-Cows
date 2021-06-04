@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class Codebreaker : MonoBehaviour {
 
-    /*
-        NOTES:
-        - have a hashSet(?) of possible options left 
-        - CanGuess() requires hashSet to be of size > 0
-        - InputPlayerResponse() updates hashSet
-        - GetGuess() picks value that would best reduce the hashSet
-    */
-
     // A struct used to represent any 4 digit number, making it easier to compare each digit
     struct Code {
         int[] code;
@@ -65,8 +57,9 @@ public class Codebreaker : MonoBehaviour {
         }
     }
 
-    Code currentGuess;
-    List<Code> allCodes, possibleCodes;
+    Code currentGuess, nextGuess;
+    HashSet<Code> allCodes, possibleCodes;
+    List<Code> eliminatedCodes = new List<Code>();
 
 #region Core functions to be called by GameManager.cs
     // Resets the set of currently possible codes to default
@@ -74,7 +67,8 @@ public class Codebreaker : MonoBehaviour {
         if(allCodes == null) {
             InitAllPossibleCodes();
         }
-        possibleCodes = new List<Code>(allCodes);
+        nextGuess = new Code(9,8,7,6);
+        possibleCodes = new HashSet<Code>(allCodes);
     }
 
     // Returns true if the AI can still continue guessing
@@ -84,27 +78,34 @@ public class Codebreaker : MonoBehaviour {
 
     // Sends the AI's next guess assuming that the game hasn't ended
     public int GetGuess() {
-        currentGuess = possibleCodes[0];
+        currentGuess = nextGuess;
         return currentGuess.GetCode();
     }
 
     // Takes in player input and eliminates incorrect codes in the current set
     public void InputPlayerResponse(int bulls, int cows) {
-        // Remove the current asnwer
+        // Remove the current answer
         possibleCodes.Remove(currentGuess);
-        // Remove all codes that don't have correct amount of bulls and cows
-        for(int i = 0; i < possibleCodes.Count; i++) {
-            if(!CheckCode(possibleCodes[i], bulls, cows)) {
-                possibleCodes.Remove(possibleCodes[i]);
-                i -= 1;
+
+        // Find all codes that need to be removed based on given bulls and cows
+        eliminatedCodes.Clear();
+        foreach(Code code in possibleCodes) {
+            if(!CheckCode(code, bulls, cows)) {
+                eliminatedCodes.Add(code);
             }
+            // Use last valid code as the next guess
+            else { nextGuess = code; }
         }
+
+        // Remove all undesired codes from the hashset
+        for(int i = 0; i < eliminatedCodes.Count; i++)
+            possibleCodes.Remove(eliminatedCodes[i]);
     }
 #endregion
 
     // Init the list of all possible codes
     private void InitAllPossibleCodes() {
-        allCodes = new List<Code>();
+        allCodes = new HashSet<Code>();
         for(int i = 0; i < 10; i++) {
             for(int j = 0; j < 10; j++) {
                 if (i == j) continue;
