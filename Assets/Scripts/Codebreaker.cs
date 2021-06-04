@@ -67,26 +67,12 @@ public class Codebreaker : MonoBehaviour {
     Code currentGuess;
     List<Code> allCodes, possibleCodes;
 
-    void Start() {
-        // Init the list of all possible codes
-        allCodes = new List<Code>();
-        for(int i = 0; i < 10; i++) {
-            for(int j = 0; j < 10; j++) {
-                if (i == j) continue;
-                for(int k = 0; k < 10; k++) {
-                    if (i == k || j == k) continue;
-                    for(int l = 0; l < 10; l++) {
-                        if (i == l || j == l || k == l) continue;
-                        Code code = new Code(i, j, k, l);
-                        allCodes.Add(code);
-                    }
-                }
-            }
-        }
-    }
-
+#region Core functions to be called by GameManager.cs
     // Resets the set of currently possible codes to default
     public void ResetAI() {
+        if(allCodes == null) {
+            InitAllPossibleCodes();
+        }
         possibleCodes = new List<Code>(allCodes);
     }
 
@@ -112,6 +98,25 @@ public class Codebreaker : MonoBehaviour {
             if(!CheckCode(possibleCodes[i], bulls, cows)) {
                 possibleCodes.Remove(possibleCodes[i]);
                 i -= 1;
+            }
+        }
+    }
+#endregion
+
+    // Init the list of all possible codes
+    private void InitAllPossibleCodes() {
+        allCodes = new List<Code>();
+        for(int i = 0; i < 10; i++) {
+            for(int j = 0; j < 10; j++) {
+                if (i == j) continue;
+                for(int k = 0; k < 10; k++) {
+                    if (i == k || j == k) continue;
+                    for(int l = 0; l < 10; l++) {
+                        if (i == l || j == l || k == l) continue;
+                        Code code = new Code(i, j, k, l);
+                        allCodes.Add(code);
+                    }
+                }
             }
         }
     }
